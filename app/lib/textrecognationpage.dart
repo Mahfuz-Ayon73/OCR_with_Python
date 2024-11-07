@@ -13,10 +13,11 @@ class TextRecognitionPage extends StatefulWidget {
 }
 
 class _TextRecognitionPageState extends State<TextRecognitionPage> {
-
   File? image;
   String recognizedText = "Extracted text will appear here";
   final ImagePicker picker = ImagePicker();
+
+  String url = 'http://IP-Address';
 
   // Function to pick an image from the gallery
   Future<void> pickImage() async {
@@ -34,7 +35,7 @@ class _TextRecognitionPageState extends State<TextRecognitionPage> {
   // Function to extract text using the backend server
   Future<void> textExtraction(File image) async {
     try {
-      final uri = Uri.parse('http://192.168.234.167:5000/extract_text');
+      final uri = Uri.parse('${url}/extract_text');
       final request = http.MultipartRequest('POST', uri);
 
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -42,7 +43,8 @@ class _TextRecognitionPageState extends State<TextRecognitionPage> {
       final response = await request.send();
       final responseBody = await http.Response.fromStream(response);
 
-      print('Status Code: ${response.statusCode}');  // Print status code for debugging
+      print(
+          'Status Code: ${response.statusCode}'); // Print status code for debugging
 
       if (response.statusCode == 200) {
         final responseData = json.decode(responseBody.body);
@@ -97,9 +99,9 @@ class _TextRecognitionPageState extends State<TextRecognitionPage> {
               image != null
                   ? Image.file(image!)
                   : Placeholder(
-                fallbackHeight: 200,
-                fallbackWidth: double.infinity,
-              ),
+                      fallbackHeight: 200,
+                      fallbackWidth: double.infinity,
+                    ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: pickImage,
