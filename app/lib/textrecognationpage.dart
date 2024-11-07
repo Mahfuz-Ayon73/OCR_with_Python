@@ -17,7 +17,7 @@ class _TextRecognitionPageState extends State<TextRecognitionPage> {
   String recognizedText = "Extracted text will appear here";
   final ImagePicker picker = ImagePicker();
 
-  String url = 'http://IP-Address';
+  String url = 'http://IP-Address:5000';
 
   // Function to pick an image from the gallery
   Future<void> pickImage() async {
